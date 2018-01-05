@@ -1,16 +1,17 @@
 import XCTest
 @testable import Datable
+import Datable
 
 class DatableTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Datable().text, "Hello, World!")
+    func testString() {
+        let correct: String = "test"
+        let data: Data = correct.data
+        let result: String = String(data: data)
+        
+        XCTAssertEqual(result, correct)
     }
 
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+//    static var allTests = [
+//        ("testExample", testExample),
+//    ]
 }

@@ -8,6 +8,10 @@
 import Foundation
 
 extension Data: Datable {
+    public init(data: Data) {
+        self.init(bytes: data.bytes)
+    }
+    
     public var data: Data {
         return self
     }
