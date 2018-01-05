@@ -12,7 +12,7 @@ public class DatableConfig {
     public static var endiannes: Endianness = .big
 }
 
-enum Endianness {
+public enum Endianness {
     case big
     case little
 }

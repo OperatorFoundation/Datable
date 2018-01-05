@@ -7,14 +7,14 @@
 
 import Foundation
 
-public extension String: Datable {
+extension String: Datable {
     public init(data: Data) {
-        self.init(data: data, encoding: DatableConfig.stringEncoding)
+        self.init(data: data, encoding: DatableConfig.stringEncoding)!
     }
     
-    public var data {
+    public var data: Data {
         get {
-            return self.data(using: DatableConfig.stringEncoding)
+            return self.data(using: DatableConfig.stringEncoding)!
         }
     }
 }
