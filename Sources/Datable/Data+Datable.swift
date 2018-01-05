@@ -9,7 +9,7 @@ import Foundation
 
 extension Data: Datable {
     public init(data: Data) {
-        self.init(bytes: data.bytes)
+        self.init(data)
     }
     
     public var data: Data {
