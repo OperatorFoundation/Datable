@@ -128,6 +128,14 @@ class DatableTests: XCTestCase {
         XCTAssertEqual(result, correct)
     }
     
+    func testStringableData() {
+        let correct: String = "test"
+        let data: Data = "test"
+        let result: String = data.string
+        
+        XCTAssertEqual(result, correct)
+    }
+    
 //    static var allTests = [
 //        ("testExample", testExample),
 //    ]
