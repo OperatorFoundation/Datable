@@ -98,6 +98,36 @@ class DatableTests: XCTestCase {
         XCTAssertEqual(result, correct)
     }
     
+    func testDataFromStringLiteralUTF8() {
+        let correct: String = "test😁"
+        
+        DatableConfig.stringLiteralEncoding = .utf8
+        let data: Data = "test😁"
+        
+        let result: String = String(bytes: data, encoding: .utf8)!
+        XCTAssertEqual(result, correct)
+    }
+
+    func testDataFromStringLiteralBase64() {
+        let correct: String = "test"
+        
+        DatableConfig.stringLiteralEncoding = .base64
+        let data: Data = "dGVzdA=="
+        
+        let result: String = String(bytes: data, encoding: .utf8)!
+        XCTAssertEqual(result, correct)
+    }
+    
+    func testDataFromStringLiteralASCII() {
+        let correct: String = "test"
+        
+        DatableConfig.stringLiteralEncoding = .ascii
+        let data: Data = "test"
+        
+        let result: String = String(bytes: data, encoding: .utf8)!
+        XCTAssertEqual(result, correct)
+    }
+    
 //    static var allTests = [
 //        ("testExample", testExample),
 //    ]

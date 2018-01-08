@@ -9,8 +9,15 @@ import Foundation
 
 public class DatableConfig {
     public static var stringEncoding: String.Encoding = .utf8
+    public static var stringLiteralEncoding: StringLiteralEncoding = .utf8
     public static var endianess: Endianness = .big
     public static let localEndianness: Endianness = determineLocalEndianness()
+}
+
+public enum StringLiteralEncoding {
+    case utf8
+    case base64
+    case ascii
 }
 
 public enum Endianness {
