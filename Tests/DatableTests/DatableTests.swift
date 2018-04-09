@@ -136,6 +136,14 @@ class DatableTests: XCTestCase {
         XCTAssertEqual(result, correct)
     }
     
+    func testStringableDouble() {
+        let correct: String = "2.1"
+        let double: Double = 2.1
+        let result: String = double.string
+        
+        XCTAssertEqual(result, correct)
+    }
+    
 //    static var allTests = [
 //        ("testExample", testExample),
 //    ]
