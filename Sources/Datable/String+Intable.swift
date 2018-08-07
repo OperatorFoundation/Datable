@@ -11,7 +11,7 @@ extension String: Intable {
     public init(int: Int) {
         return String(int)!
     }
-    public var int: Int {
+    public var intt: Int {
         return Int(self)!
     }
     

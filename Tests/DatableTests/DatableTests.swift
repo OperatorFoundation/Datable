@@ -136,12 +136,20 @@ class DatableTests: XCTestCase {
         XCTAssertEqual(result, correct)
     }
     
-    func testStringableDouble() {
-        let correct: String = "2.1"
-        let double: Double = 2.1
-        let result: String = double.string
+//    func testStringableDouble() {
+//        let correct: String = "2.1"
+//        let double: Double = 2.1
+//        let result: String = double.string
+//        
+//        XCTAssertEqual(result, correct)
+//    }
+    
+    func testIntableString() {
+        let correct: Int = 1234
+        let string: String = "1234"
+        let result: Int = string.intt
         
-        XCTAssertEqual(result, correct)
+        XCTAssertEquals(correct, result);
     }
     
 //    static var allTests = [

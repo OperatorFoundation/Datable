@@ -9,7 +9,7 @@ import Foundation
 
 public protocol Intable {
     init(int: Int)
-    var int: Int { get }
+    var intt: Int { get }
     
     init(int8: Int8)
     var int8: Int8 { get }
