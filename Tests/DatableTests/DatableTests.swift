@@ -149,7 +149,7 @@ class DatableTests: XCTestCase {
         let string: String = "1234"
         let result: Int = string.intt
         
-        XCTAssertEquals(correct, result);
+        XCTAssertEqual(correct, result);
     }
     
 //    static var allTests = [
