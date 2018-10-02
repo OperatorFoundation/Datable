@@ -162,6 +162,24 @@ class DatableTests: XCTestCase {
         XCTAssertEqual(correct, result);
     }
     
+    func testArrayableArrayToData()
+    {
+        let correct: Data = Data(bytes: [0x00, 0x10, 0x0A])
+        let array: [UInt8] = [0x00, 0x10, 0x0A]
+        let result: Data = Data(array: array)
+        
+        XCTAssertEqual(result, correct)
+    }
+
+    func testArrayableDataArray()
+    {
+        let correct: [UInt8] = [0x00, 0x10, 0x0A]
+        let data: Data = Data(bytes: [0x00, 0x10, 0x0A])
+        let result: [UInt8] = data.array
+        
+        XCTAssertEqual(result, correct)
+    }
+    
 //    static var allTests = [
 //        ("testExample", testExample),
 //    ]
