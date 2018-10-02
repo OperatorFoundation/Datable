@@ -127,6 +127,16 @@ class DatableTests: XCTestCase {
         let result: String = String(bytes: data, encoding: .utf8)!
         XCTAssertEqual(result, correct)
     }
+
+    func testDataFromStringLiteralHex() {
+        let correct: String = "test"
+        
+        DatableConfig.stringLiteralEncoding = .hex
+        let data: Data = "74657374"
+        
+        let result: String = String(bytes: data, encoding: .utf8)!
+        XCTAssertEqual(result, correct)
+    }
     
     func testStringableData() {
         let correct: String = "test"
