@@ -9,5 +9,5 @@ import Foundation
 
 public protocol MaybeDatable {
     init?(data: Data)
-    var data: Data? { get }
+    var data: Data { get }
 }
