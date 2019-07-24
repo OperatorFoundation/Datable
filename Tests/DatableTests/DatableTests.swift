@@ -180,6 +180,15 @@ class DatableTests: XCTestCase {
         XCTAssertEqual(result, correct)
     }
     
+    func testCSVable()
+    {
+        let correct: String = "1,2,3"
+        let input: [UInt8] = [1, 2, 3]
+        let result: String = input.csv
+        
+        XCTAssertEqual(result, correct)
+    }
+    
 //    static var allTests = [
 //        ("testExample", testExample),
 //    ]
