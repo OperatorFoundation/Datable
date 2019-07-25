@@ -9,7 +9,7 @@ import Foundation
 
 extension Array: CSVable where Element: Stringable
 {
-    var csv: String
+    public var csv: String
     {
         get
         {
