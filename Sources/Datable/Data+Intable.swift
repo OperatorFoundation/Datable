@@ -1,80 +1,80 @@
 //
-//  String+Intable.swift
-//  DatablePackageDescription
+//  Data+Intable.swift
+//  Datable
 //
-//  Created by Brandon Wiley on 7/30/18.
+//  Created by Dr. Brandon Wiley on 11/1/18.
 //
 
 import Foundation
 
-extension String: Intable {
+extension Data: Intable {
     public init(int: Int) {
-        self = String(int)
+        self = int.data
     }
-    public var int: Int {
-        return Int(self)!
+    public var intt: Int {
+        return Int(data: self)
     }
     
     public init(int8: Int8) {
-        self = String(int8)
+        self = int8.data
     }
     public var int8: Int8 {
-        return Int8(self)!
+        return Int8(data: self)
     }
     
     public init(int16: Int16) {
-        self = String(int16)
+        self = int16.data
     }
     public var int16: Int16 {
-        return Int16(self)!
+        return Int16(data: self)
     }
-    
+
     public init(int32: Int32) {
-        self = String(int32)
+        self = int32.data
     }
     public var int32: Int32 {
-        return Int32(self)!
+        return Int32(data: self)
     }
-    
+
     public init(int64: Int64) {
-        self = String(int64)
+        self = int64.data
     }
     public var int64: Int64 {
-        return Int64(self)!
+        return Int64(data: self)
     }
     
     public init(uint: UInt) {
-        self = String(uint)
+        self = uint.data
     }
     public var uint: UInt {
-        return UInt(self)!
+        return UInt(data: self)
     }
     
     public init(uint8: UInt8) {
-        self = String(uint8)
+        self = uint8.data
     }
     public var uint8: UInt8 {
-        return UInt8(self)!
+        return UInt8(data: self)
     }
     
     public init(uint16: UInt16) {
-        self = String(uint16)
+        self = uint16.data
     }
     public var uint16: UInt16 {
-        return UInt16(self)!
+        return UInt16(data: self)
     }
     
     public init(uint32: UInt32) {
-        self = String(uint32)
+        self = uint32.data
     }
     public var uint32: UInt32 {
-        return UInt32(self)!
+        return UInt32(data: self)
     }
     
     public init(uint64: UInt64) {
-        self = String(uint64)
+        self = uint64.data
     }
     public var uint64: UInt64 {
-        return UInt64(self)!
+        return UInt64(data: self)
     }
 }

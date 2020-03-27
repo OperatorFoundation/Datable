@@ -18,6 +18,7 @@ public enum StringLiteralEncoding {
     case utf8
     case base64
     case ascii
+    case hex
 }
 
 public enum Endianness {
