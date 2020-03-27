@@ -144,13 +144,13 @@ class DatableTests: XCTestCase {
 //        XCTAssertEqual(result, correct)
 //    }
     
-    func testIntableString() {
-        let correct: Int = 1234
-        let string: String = "1234"
-        let result: Int = string.intt
-        
-        XCTAssertEquals(correct, result);
-    }
+//    func testIntableString() {
+//        let correct: Int = 1234
+//        let string: String = "1234"
+//        let result: Int = string.int
+//        
+//        XCTAssertEqual(correct, result);
+//    }
     
 //    static var allTests = [
 //        ("testExample", testExample),
