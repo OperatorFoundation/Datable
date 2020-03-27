@@ -11,7 +11,7 @@ extension Data: Intable {
     public init(int: Int) {
         self = int.data
     }
-    public var intt: Int {
+    public var int: Int {
         return Int(data: self)
     }
     
