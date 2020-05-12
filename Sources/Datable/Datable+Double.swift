@@ -11,20 +11,16 @@ extension Double: Datable
 {
     public init(data: Data)
     {
-        var value = data.withUnsafeBytes
-        {
-            (ptr: UnsafePointer<Float>) -> Float in
-            return ptr.pointee
-        }
+        var value = data.withUnsafeBytes { $0.load(as: Double.self) }
         
         if DatableConfig.endianess != DatableConfig.localEndianness
         {
             switch DatableConfig.endianess
             {
             case .little:
-                value = Float(bitPattern: UInt32(littleEndian: data.withUnsafeBytes {$0.pointee}))
+                value = Double(bitPattern: UInt64(littleEndian: data.withUnsafeBytes {$0.load(as: UInt64.self)}))
             case .big:
-                value = Float(bitPattern: UInt32(bigEndian: data.withUnsafeBytes {$0.pointee}))
+                value = Double(bitPattern: UInt64(bigEndian: data.withUnsafeBytes {$0.load(as: UInt64.self)}))
             }
         }
         
@@ -48,7 +44,7 @@ extension Double: Datable
                 }
             }
             
-            return Data(buffer: UnsafeBufferPointer(start: &value, count: 1))
+            return withUnsafeBytes(of: value) { Data($0) }
         }
     }
 }
