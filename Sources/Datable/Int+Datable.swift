@@ -9,10 +9,7 @@ import Foundation
 
 extension Int: Datable {
     public init(data: Data) {
-        var value = data.withUnsafeBytes {
-            (ptr: UnsafePointer<Int>) -> Int in
-            return ptr.pointee
-        }
+        var value = data.withUnsafeBytes{ $0.load(as: Int.self) }
         
         if DatableConfig.endianess != DatableConfig.localEndianness {
             switch DatableConfig.endianess {
@@ -39,17 +36,14 @@ extension Int: Datable {
                 }
             }
             
-            return Data(buffer: UnsafeBufferPointer(start: &value, count: 1))
+            return withUnsafeBytes(of: value) { Data($0) }
         }
     }
 }
 
 extension Int64: Datable {
     public init(data: Data) {
-        var value = data.withUnsafeBytes {
-            (ptr: UnsafePointer<Int64>) -> Int64 in
-            return ptr.pointee
-        }
+        var value = data.withUnsafeBytes{ $0.load(as: Int64.self) }
         
         if DatableConfig.endianess != DatableConfig.localEndianness {
             switch DatableConfig.endianess {
@@ -76,17 +70,14 @@ extension Int64: Datable {
                 }
             }
             
-            return Data(buffer: UnsafeBufferPointer(start: &value, count: 1))
+            return withUnsafeBytes(of: value) { Data($0) }
         }
     }
 }
 
 extension Int32: Datable {
     public init(data: Data) {
-        var value = data.withUnsafeBytes {
-            (ptr: UnsafePointer<Int32>) -> Int32 in
-            return ptr.pointee
-        }
+        var value = data.withUnsafeBytes{ $0.load(as: Int32.self) }
         
         if DatableConfig.endianess != DatableConfig.localEndianness {
             switch DatableConfig.endianess {
@@ -113,17 +104,14 @@ extension Int32: Datable {
                 }
             }
             
-            return Data(buffer: UnsafeBufferPointer(start: &value, count: 1))
+            return withUnsafeBytes(of: value) { Data($0) }
         }
     }
 }
 
 extension Int16: Datable {
     public init(data: Data) {
-        var value = data.withUnsafeBytes {
-            (ptr: UnsafePointer<Int16>) -> Int16 in
-            return ptr.pointee
-        }
+        var value = data.withUnsafeBytes{ $0.load(as: Int16.self) }
         
         if DatableConfig.endianess != DatableConfig.localEndianness {
             switch DatableConfig.endianess {
@@ -150,25 +138,22 @@ extension Int16: Datable {
                 }
             }
             
-            return Data(buffer: UnsafeBufferPointer(start: &value, count: 1))
+            return withUnsafeBytes(of: value) { Data($0) }
         }
     }
 }
 
 extension Int8: Datable {
     public init(data: Data) {
-        let value = data.withUnsafeBytes {
-            (ptr: UnsafePointer<Int8>) -> Int8 in
-            return ptr.pointee
-        }
+        let value = data.withUnsafeBytes{ $0.load(as: Int8.self) }
         
         self.init(value)
     }
     
     public var data: Data {
         get {
-            var value = self
-            return Data(buffer: UnsafeBufferPointer(start: &value, count: 1))
+            let value = self
+            return withUnsafeBytes(of: value) { Data($0) }
         }
     }
 }

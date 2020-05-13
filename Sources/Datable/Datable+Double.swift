@@ -11,7 +11,7 @@ extension Double: Datable
 {
     public init(data: Data)
     {
-        var value = data.withUnsafeBytes { $0.load(as: Double.self) }
+        var value = data.withUnsafeBytes{ $0.load(as: Double.self) }
         
         if DatableConfig.endianess != DatableConfig.localEndianness
         {

@@ -5,19 +5,12 @@ extension Data: Arrayable {
 
     public init(array: [Element])
     {
-        self.init(bytes: array)
+        self.init(array)
     }
 
     public var array: [Element]
     {
-        let array = self.withUnsafeBytes
-        {
-            (pointer: UnsafePointer<Element>) -> [Element] in
-
-            let buffer = UnsafeBufferPointer(start: pointer, count: self.count)
-            return Array<Element>(buffer)
-        }
-
+        let array = self.withUnsafeBytes{ $0.load(as: [Element].self) }
         return array
     }
 }
