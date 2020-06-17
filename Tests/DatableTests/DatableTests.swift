@@ -157,13 +157,13 @@ class DatableTests: XCTestCase
         XCTAssertEqual(result, correct)
     }
     
-//    func testStringableDouble() {
-//        let correct: String = "2.1"
-//        let double: Double = 2.1
-//        let result: String = double.string
-//        
-//        XCTAssertEqual(result, correct)
-//    }
+    func testStringableDouble() {
+        let correct: String = "2.1"
+        let double: Double = 2.1
+        let result: String = double.string
+        
+        XCTAssertEqual(result, correct)
+    }
     
     func testIntableString() {
         let correct: Int = 1234
@@ -182,14 +182,14 @@ class DatableTests: XCTestCase
         XCTAssertEqual(result, correct)
     }
 
-//    func testArrayableDataArray()
-//    {
-//        let correct: [UInt8] = [0x00, 0x10, 0x0A]
-//        let data: Data = Data([0x00, 0x10, 0x0A])
-//        let result: [UInt8] = data.array
-//
-//        XCTAssertEqual(result, correct)
-//    }
+    func testArrayableDataArray()
+    {
+        let correct: [UInt8] = [0x00, 0x10, 0x0A]
+        let data: Data = Data([0x00, 0x10, 0x0A])
+        let result: [UInt8] = data.array
+
+        XCTAssertEqual(result, correct)
+    }
     
     // MARK: Double
     
@@ -254,13 +254,13 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-//    func testUintStringableFail()
-//    {
-//        let number: UInt = 5
-//        let uintFromString = UInt(string: "5.0")
-//        
-//        XCTAssertEqual(number, uintFromString)
-//    }
+    func testUintStringableFail()
+    {
+        let number: UInt = 5
+        let uintFromString = UInt(string: "5.0")
+        
+        XCTAssertEqual(number, uintFromString)
+    }
     
     func testUIntZeroBytesLittleE()
     {
@@ -1613,16 +1613,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int, result)
     }
     
-//    func testCSVable()
-//    {
-//        let correct: String = "1,2,3"
-//        let input: [UInt8] = [1, 2, 3]
-//        let result: String = input.csv
-//        
-//        XCTAssertEqual(result, correct)
-//    }
-    
-//    static var allTests = [
-//        ("testExample", testExample),
-//    ]
+    func testCSVable()
+    {
+        let correct: String = "1,2,3"
+        let input: [UInt8] = [1, 2, 3]
+        let result: String = input.csv
+        
+        XCTAssertEqual(result, correct)
+    }    
 }

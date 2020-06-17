@@ -10,7 +10,13 @@ extension Data: Arrayable {
 
     public var array: [Element]
     {
-        let array = self.withUnsafeBytes{ $0.load(as: [Element].self) }
+        let array = self.withUnsafeBytes
+        {
+            (pointer: UnsafePointer<UInt8>) -> [UInt8] in
+            
+            let buffer = UnsafeBufferPointer(start: pointer, count: self.count)
+            return Array<UInt8>(buffer)
+        }
         return array
     }
 }
