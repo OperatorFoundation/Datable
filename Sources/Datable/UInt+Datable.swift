@@ -11,38 +11,27 @@ extension UInt: Datable
 {
     public init(data: Data)
     {
+        // Assert that we are running on a 64-bit platform
+        assert(UInt.max == UInt64.max)
+        
         let uint64 = UInt64(data: data)
-        
-        // Fixme: This should be a failable Initializer
-        guard uint64 <= UInt.max
-        else
-        {
-            self = 0
-            print("This number is too large to be converted to a UInt64")
-            return
-        }
-        
         let value = UInt(uint64)
-        self.init(value)
+        self = value
     }
     
     public var data: Data
     {
-        get
+        // Assert that we are running on a little-endian platform
+        assert(DatableConfig.localEndianness == .little)
+        
+        var value = self
+
+        if DatableConfig.endianess != DatableConfig.localEndianness
         {
-            var value = self
-            
-            if DatableConfig.endianess != DatableConfig.localEndianness {
-                switch DatableConfig.localEndianness {
-                case .little:
-                    value = value.bigEndian
-                case .big:
-                    value = value.littleEndian
-                }
-            }
-            
-            return withUnsafeBytes(of: value) { Data($0) }
+            value = value.byteSwapped
         }
+
+        return withUnsafeBytes(of: value) { Data($0) }
     }
 }
 
@@ -50,6 +39,9 @@ extension UInt64: Datable
 {
     public init(data: Data)
     {
+        // Assert that we are running on a little-endian platform
+        assert(DatableConfig.localEndianness == .little)
+        
         var paddedData: Data
         
         guard data.count > 0, data.count <= 8
@@ -86,33 +78,27 @@ extension UInt64: Datable
         var value = paddedData.withUnsafeBytes{ $0.load(as: UInt64.self) }
         
         // Fix the endianess if config and system don't match to make sure our number is correct
-        if DatableConfig.endianess != DatableConfig.localEndianness {
-            switch DatableConfig.endianess {
-            case .little:
-                value = value.littleEndian
-            case .big:
-                value = value.bigEndian
-            }
+        if DatableConfig.endianess != DatableConfig.localEndianness
+        {
+            value = value.byteSwapped
         }
         
-        self.init(value)
+        self = value
     }
     
-    public var data: Data {
-        get {
-            var value = self
-            
-            if DatableConfig.endianess != DatableConfig.localEndianness {
-                switch DatableConfig.localEndianness {
-                case .little:
-                    value = value.bigEndian
-                case .big:
-                    value = value.littleEndian
-                }
-            }
-            
-            return withUnsafeBytes(of: value) { Data($0) }
+    public var data: Data
+    {
+        // Assert that we are running on a little-endian platform
+        assert(DatableConfig.localEndianness == .little)
+        
+        var value = self
+
+        if DatableConfig.endianess != DatableConfig.localEndianness
+        {
+            value = value.byteSwapped
         }
+
+        return withUnsafeBytes(of: value) { Data($0) }
     }
 }
 
@@ -135,21 +121,19 @@ extension UInt32: Datable
         self.init(value)
     }
     
-    public var data: Data {
-        get {
-            var value = self
-            
-            if DatableConfig.endianess != DatableConfig.localEndianness {
-                switch DatableConfig.localEndianness {
-                case .little:
-                    value = value.bigEndian
-                case .big:
-                    value = value.littleEndian
-                }
-            }
-            
-            return withUnsafeBytes(of: value) { Data($0) }
+    public var data: Data
+    {
+        // Assert that we are running on a little-endian platform
+        assert(DatableConfig.localEndianness == .little)
+        
+        var value = self
+
+        if DatableConfig.endianess != DatableConfig.localEndianness
+        {
+            value = value.byteSwapped
         }
+
+        return withUnsafeBytes(of: value) { Data($0) }
     }
 }
 
@@ -174,23 +158,17 @@ extension UInt16: Datable
     
     public var data: Data
     {
-        get
+        // Assert that we are running on a little-endian platform
+        assert(DatableConfig.localEndianness == .little)
+        
+        var value = self
+
+        if DatableConfig.endianess != DatableConfig.localEndianness
         {
-            var value = self
-            
-            if DatableConfig.endianess != DatableConfig.localEndianness
-            {
-                switch DatableConfig.localEndianness
-                {
-                case .little:
-                    value = value.bigEndian
-                case .big:
-                    value = value.littleEndian
-                }
-            }
-            
-            return withUnsafeBytes(of: value) { Data($0) }
+            value = value.byteSwapped
         }
+
+        return withUnsafeBytes(of: value) { Data($0) }
     }
 }
 
@@ -215,11 +193,8 @@ extension UInt8: Datable
     
     public var data: Data
     {
-        get
-        {
-            let value = self
-            return withUnsafeBytes(of: value) { Data($0) }
-        }
+        let value = self
+        return withUnsafeBytes(of: value) { Data($0) }
     }
 }
 

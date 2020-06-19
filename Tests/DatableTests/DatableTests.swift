@@ -32,41 +32,46 @@ class DatableTests: XCTestCase
     func testInt() {
         let correct: Int = 1234567890
         let data: Data = correct.data
-        let result: Int = Int(data: data)
+        let result = Int(data: data)
+        XCTAssertNotNil(result)
         
-        XCTAssertEqual(result, correct)
+        XCTAssertEqual(result!, correct)
     }
 
     func testInt64() {
         let correct: Int64 = 1234567890
         let data: Data = correct.data
-        let result: Int64 = Int64(data: data)
+        let result = Int64(data: data)
+        XCTAssertNotNil(result)
         
-        XCTAssertEqual(result, correct)
+        XCTAssertEqual(result!, correct)
     }
 
     func testInt32() {
         let correct: Int32 = 1234567890
         let data: Data = correct.data
-        let result: Int32 = Int32(data: data)
+        let result = Int32(data: data)
+        XCTAssertNotNil(result)
         
-        XCTAssertEqual(result, correct)
+        XCTAssertEqual(result!, correct)
     }
 
     func testInt16() {
         let correct: Int16 = 12345
         let data: Data = correct.data
-        let result: Int16 = Int16(data: data)
+        let result = Int16(data: data)
+        XCTAssertNotNil(result)
         
-        XCTAssertEqual(result, correct)
+        XCTAssertEqual(result!, correct)
     }
 
     func testInt8() {
         let correct: Int8 = 123
         let data: Data = correct.data
-        let result: Int8 = Int8(data: data)
+        let result = Int8(data: data)
+        XCTAssertNotNil(result)
         
-        XCTAssertEqual(result, correct)
+        XCTAssertEqual(result!, correct)
     }
 
     func testUInt() {
@@ -190,9 +195,151 @@ class DatableTests: XCTestCase
 
         XCTAssertEqual(result, correct)
     }
+                
+    // MARK: Float
+    
+    func testDatableFloatZero()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+        
+        let correct: Float = 0.0
+        
+        let data: Data = correct.data
+        let result = data.float
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testFloatableDataZero()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Float = 0.0
+        let input: Data = Data(array: [0x00, 0x00, 0x00, 0x00])
+        
+        let result = input.float
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testDatableFloatInitZero()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Float = 0.0
+        let input: Data = Data(array: [0x00, 0x00, 0x00, 0x00])
+        
+        let result = Float(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testDatableFloatFailTooBig()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let input: Data = Data(repeating: 0, count: 9)
+        
+        let result = Float(data: input)
+        XCTAssertNil(result)
+    }
+
+    func testFloatableDataFailTooBig()
+    {
+        let input: Data = Data(repeating: 0, count: 9)
+        
+        let result = input.float
+        XCTAssertNil(result)
+    }
+    
+    func testDatableFloatFailTooSmall()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let input: Data = Data(repeating: 0, count: 3)
+        
+        let result = Float(data: input)
+        XCTAssertNil(result)
+    }
+
+    func testFloatableDataFailTooSmall()
+    {
+        let input: Data = Data(repeating: 0, count: 3)
+        
+        let result = input.float
+        XCTAssertNil(result)
+    }
+    
+    func testDatableFloatDownconvertDouble()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Float = 0.0
+        let input: Data = Data(repeating: 0, count: 8)
+        
+        let result = Float(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+
+    func testFloatableDataDownconvertDouble()
+    {
+        let correct: Float = 0.0
+        let input: Data = Data(repeating: 0, count: 8)
+        
+        let result = input.float
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testDatableFloatFailDownconvertDouble()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let input: Data = Data(repeating: 0xFF, count: 8)
+        
+        let result = Float(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertTrue(result!.isNaN)
+    }
+    
+    func testFloatableData()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Data = Data(array: [0x00, 0x00, 0x00, 0x00])
+        let input: Float = 0.0
+        
+        let result = Data(float: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
     
     // MARK: Double
-    
+
     func testDoubleStringable()
     {
         let numberString = "5.5"
@@ -204,19 +351,145 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberString, stringFromNumber)
     }
     
-    func testDatableDouble()
-    {
-        // A double is 64 bits
-        // These are not divided into bytes
-    }
-    
-    // MARK: Float
-    
-    func testDatableFloat()
+    func testDatableDoubleZero()
     {
         // A float is 32 bits
         // These are not divided into bytes
         //  (1)sign, (8)exponent, (23)base
+        
+        let correct: Double = 0.0
+        
+        let data: Data = correct.data
+        let result = data.double
+        XCTAssertNotNil(result)
+
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testFloatableDataZeroDouble()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Double = 0.0
+        let input: Data = Data(array: [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+        
+        let result = input.double
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testDatableDoubleInitZero()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Double = 0.0
+        let input: Data = Data(array: [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+        
+        let result = Double(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testDatableDoubleFailTooBig()
+    {
+        let input: Data = Data(repeating: 0, count: 9)
+        
+        let result = Double(data: input)
+        XCTAssertNil(result)
+    }
+    
+    func testFloatableDataFailTooBigDouble()
+    {
+        let input: Data = Data(repeating: 0, count: 9)
+        
+        let result = input.double
+        XCTAssertNil(result)
+    }
+    
+    func testDatableDoubleFailTooSmall()
+    {
+        let input: Data = Data(repeating: 0, count: 3)
+        
+        let result = Double(data: input)
+        XCTAssertNil(result)
+    }
+            
+    func testDatableDoubleUpconvertFloat()
+    {
+        let correct: Double = 0.0
+        let input: Data = Data(repeating: 0, count: 4)
+        
+        let result = Double(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testDatableDoubleUpconvertFloatSwapEndianness()
+    {
+        DatableConfig.endianess = .big
+        
+        let correct: Double = 0.0
+        let input: Data = Data(repeating: 0, count: 4)
+        
+        let result = Double(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+
+    func testDatableDoubleSwapEndianness()
+    {
+        DatableConfig.endianess = .big
+        
+        let correct: Double = 0.0
+        let input: Data = Data(repeating: 0, count: 8)
+        
+        let result = Double(data: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+    
+    func testFloatableDataDoubleUpconvertFloat()
+    {
+        let correct: Double = 0.0
+        let input: Data = Data(repeating: 0, count: 4)
+        
+        let result = input.double
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
+    }
+
+    func testFloatableDataFailDoubleUpconvertFloat()
+    {
+        let input: Data = Data(repeating: 0xFF, count: 4)
+        
+        let result = input.double
+        XCTAssertNotNil(result)
+        XCTAssertTrue(result!.isNaN)
+    }
+    
+    func testFloatableDataDouble()
+    {
+        // A float is 32 bits
+        // These are not divided into bytes
+        //  (1)sign, (8)exponent, (23)base
+
+        let correct: Data = Data(repeating: 0, count: 8)
+        let input: Double = 0.0
+        
+        let result = Data(double: input)
+        XCTAssertNotNil(result)
+        
+        XCTAssertEqual(correct, result!)
     }
     
     // MARK: UInt
@@ -246,7 +519,11 @@ class DatableTests: XCTestCase
     func testDataUIntable()
     {
         let correctNumber = UInt(0x11)
-        let dataFromNumber = Data(uint: correctNumber)
+        guard let dataFromNumber = Data(uint: correctNumber) else
+        {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -254,13 +531,13 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-    func testUintStringableFail()
-    {
-        let number: UInt = 5
-        let uintFromString = UInt(string: "5.0")
-        
-        XCTAssertEqual(number, uintFromString)
-    }
+//    func testUintStringableFail()
+//    {
+//        let number: UInt = 5
+//        let uintFromString = UInt(string: "5.0")
+//        
+//        XCTAssertEqual(number, uintFromString)
+//    }
     
     func testUIntZeroBytesLittleE()
     {
@@ -276,7 +553,11 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt(0x11)
         let data = Data(array: [0x11])
-        let result = data.uint
+        guard let result = data.uint else
+        {
+            XCTFail()
+            return
+        }
           
         XCTAssertEqual(correct, result)
         
@@ -289,7 +570,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint
+        let result = data.uint!
           
         XCTAssertEqual(correct, result)
         
@@ -302,7 +583,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.uint
+        let result = data.uint!
           
         XCTAssertEqual(correct, result)
         
@@ -334,7 +615,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt(0x11)
         let data = Data(array: [0x11])
-        let result = data.uint
+        let result = data.uint!
           
         XCTAssertEqual(correct, result)
         
@@ -347,7 +628,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint
+        let result = data.uint!
           
         XCTAssertEqual(correct, result)
         
@@ -360,7 +641,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.uint
+        let result = data.uint!
           
         XCTAssertEqual(correct, result)
         
@@ -372,7 +653,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint
+        let result = data.uint!
         
         // 0 is an indication that the initializer failed atm
         XCTAssertEqual(0, result)
@@ -405,11 +686,11 @@ class DatableTests: XCTestCase
     func testDataUInt64able()
     {
         let correctNumber = UInt64(0x11)
-        let dataFromNumber = Data(uint64: correctNumber)
+        let dataFromNumber = Data(uint64: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
-        let numberFromData = dataFromNumber.uint64
+        let numberFromData = dataFromNumber.uint64!
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
@@ -427,7 +708,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt64(0x11)
         let data = Data(array: [0x11])
-        let result = data.uint64
+        let result = data.uint64!
           
         XCTAssertEqual(correct, result)
         
@@ -440,7 +721,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt64(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint64
+        let result = data.uint64!
           
         XCTAssertEqual(correct, result)
         
@@ -453,7 +734,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt64(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.uint64
+        let result = data.uint64!
           
         XCTAssertEqual(correct, result)
         
@@ -465,7 +746,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint64
+        let result = data.uint64!
         
         // 0 is an indication that the initializer failed atm
         XCTAssertEqual(0, result)
@@ -475,7 +756,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data()
-        let result = data.uint64
+        let result = data.uint64!
         
         XCTAssertEqual(0, result)
     }
@@ -485,7 +766,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt64(0x11)
         let data = Data(array: [0x11])
-        let result = data.uint64
+        let result = data.uint64!
           
         XCTAssertEqual(correct, result)
         
@@ -498,7 +779,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt64(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint64
+        let result = data.uint64!
           
         XCTAssertEqual(correct, result)
         
@@ -511,7 +792,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt64(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.uint64
+        let result = data.uint64!
           
         XCTAssertEqual(correct, result)
         
@@ -523,7 +804,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint64
+        let result = data.uint64!
         
         // 0 is an indication that the initializer failed atm
         XCTAssertEqual(0, result)
@@ -556,11 +837,11 @@ class DatableTests: XCTestCase
     func testDataUInt32able()
     {
         let correctNumber = UInt32(0x11)
-        let dataFromNumber = Data(uint32: correctNumber)
+        let dataFromNumber = Data(uint32: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
-        let numberFromData = dataFromNumber.uint32
+        let numberFromData = dataFromNumber.uint32!
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
@@ -568,7 +849,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data()
-        let result = data.uint32
+        let result = data.uint32!
         
         XCTAssertEqual(0, result)
     }
@@ -578,7 +859,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt32(0x11)
         let data = Data(array: [0x11])
-        let result = data.uint32
+        let result = data.uint32!
           
         XCTAssertEqual(correct, result)
         
@@ -591,7 +872,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt32(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint32
+        let result = data.uint32!
           
         XCTAssertEqual(correct, result)
         
@@ -604,7 +885,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt32(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.uint32
+        let result = data.uint32!
           
         XCTAssertEqual(correct, result)
         
@@ -616,7 +897,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint32
+        let result = data.uint32!
         
         // 0 is an indication that the initializer failed atm
         XCTAssertEqual(0, result)
@@ -626,7 +907,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data()
-        let result = data.uint32
+        let result = data.uint32!
         
         XCTAssertEqual(0, result)
     }
@@ -636,7 +917,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt32(0x11)
         let data = Data(array: [0x11])
-        let result = data.uint32
+        let result = data.uint32!
           
         XCTAssertEqual(correct, result)
         
@@ -649,7 +930,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt32(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint32
+        let result = data.uint32!
           
         XCTAssertEqual(correct, result)
         
@@ -662,7 +943,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt32(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.uint32
+        let result = data.uint32!
           
         XCTAssertEqual(correct, result)
         
@@ -674,7 +955,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint32
+        let result = data.uint32!
         
         // 0 is an indication that the initializer failed atm
         XCTAssertEqual(0, result)
@@ -707,7 +988,7 @@ class DatableTests: XCTestCase
     func testDataUInt16able()
     {
         let correctNumber = UInt16(0x11)
-        let dataFromNumber = Data(uint16: correctNumber)
+        let dataFromNumber = Data(uint16: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -719,7 +1000,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data()
-        let result = data.uint16
+        let result = data.uint16!
         
         XCTAssertEqual(0, result)
     }
@@ -729,7 +1010,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .little
        let correct = UInt16(0x08)
        let data = Data(array: [0x08])
-       let result = data.uint16
+       let result = data.uint16!
        
        XCTAssertEqual(correct, result)
         
@@ -742,7 +1023,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt16(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint16
+        let result = data.uint16!
           
         XCTAssertEqual(correct, result)
         
@@ -754,7 +1035,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint16
+        let result = data.uint16!
         
         // 0 is an indication that the initializer failed (for now)
         // This should fail because the value is larger than is possible for UInt16
@@ -765,7 +1046,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data()
-        let result = data.uint16
+        let result = data.uint16!
         
         XCTAssertEqual(0, result)
     }
@@ -775,7 +1056,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .big
        let correct = UInt16(0x08)
        let data = Data(array: [0x08])
-       let result = data.uint16
+       let result = data.uint16!
        
        XCTAssertEqual(correct, result)
         
@@ -788,7 +1069,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = UInt16(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint16
+        let result = data.uint16!
           
         XCTAssertEqual(correct, result)
         
@@ -800,7 +1081,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
-        let result = data.uint16
+        let result = data.uint16!
         
         // 0 is an indication that the initializer failed (for now)
         // This should fail because the value is larger than is possible for UInt16
@@ -834,7 +1115,7 @@ class DatableTests: XCTestCase
     func testDataUInt8able()
     {
         let correctNumber = UInt8(0x11)
-        let dataFromNumber = Data(uint8: correctNumber)
+        let dataFromNumber = Data(uint8: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -846,7 +1127,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data()
-        let result = data.uint8
+        let result = data.uint8!
         
         XCTAssertEqual(0, result)
     }
@@ -856,7 +1137,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .little
        let correct = UInt8(0x08)
        let data = Data(array: [0x08])
-       let result = data.uint8
+       let result = data.uint8!
        
        XCTAssertEqual(correct, result)
         
@@ -869,7 +1150,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt8(0x0001)
         let data = Data(array: [0x01, 0x00])
-        let result = data.uint8
+        let result = data.uint8!
           
         XCTAssertEqual(correct, result)
         
@@ -881,7 +1162,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11])
-        let result = data.uint8
+        let result = data.uint8!
 
         XCTAssertEqual(0, result)
     }
@@ -890,7 +1171,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data()
-        let result = data.uint8
+        let result = data.uint8!
         
         XCTAssertEqual(0, result)
     }
@@ -900,7 +1181,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .big
        let correct = UInt8(0x08)
        let data = Data(array: [0x08])
-       let result = data.uint8
+       let result = data.uint8!
        
        XCTAssertEqual(correct, result)
         
@@ -912,7 +1193,7 @@ class DatableTests: XCTestCase
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11])
-        let result = data.uint8
+        let result = data.uint8!
           
         XCTAssertEqual(0, result)
     }
@@ -944,7 +1225,7 @@ class DatableTests: XCTestCase
     func testDataIntable()
     {
         let correctNumber = Int(0x11)
-        let dataFromNumber = Data(int: correctNumber)
+        let dataFromNumber = Data(int: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -952,13 +1233,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-    func testIntZeroBytesLittleE()
+    func testIntFailZeroBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data()
         let result = data.int
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testIntOneByteLittleE()
@@ -966,7 +1246,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int(0x11)
         let data = Data(array: [0x11])
-        let result = data.int
+        let result = data.int!
           
         XCTAssertEqual(correct, result)
         
@@ -979,7 +1259,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int
+        let result = data.int!
           
         XCTAssertEqual(correct, result)
         
@@ -992,7 +1272,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.int
+        let result = data.int!
           
         XCTAssertEqual(correct, result)
         
@@ -1000,23 +1280,20 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int, result)
     }
     
-    func testIntNineBytesLittleE()
+    func testIntFailNineBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int
-        
-        // 0 is an indication that the initializer failed atm
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
-    func testIntZeroBytesBigE()
+    func testIntFailZeroBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data()
         let result = data.int
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testIntOneByteBigeE()
@@ -1024,7 +1301,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int(0x11)
         let data = Data(array: [0x11])
-        let result = data.int
+        let result = data.int!
           
         XCTAssertEqual(correct, result)
         
@@ -1037,7 +1314,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int
+        let result = data.int!
           
         XCTAssertEqual(correct, result)
         
@@ -1050,7 +1327,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.int
+        let result = data.int!
           
         XCTAssertEqual(correct, result)
         
@@ -1058,19 +1335,14 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int, result)
     }
     
-    func testIntNineBytesBigE()
+    func testIntFailNineBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int
-        
-        // 0 is an indication that the initializer failed atm
-        XCTAssertEqual(0, result)
-        
-        let intData = result.data
-        XCTAssertEqual(intData.int, result)
+        XCTAssertNil(result)
     }
-    
+        
     // MARK: Int64
     
     func testStringInt64able()
@@ -1098,7 +1370,7 @@ class DatableTests: XCTestCase
     func testDataInt64able()
     {
         let correctNumber = Int64(0x11)
-        let dataFromNumber = Data(int64: correctNumber)
+        let dataFromNumber = Data(int64: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -1106,13 +1378,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-    func testInt64ZeroBytesLittleE()
+    func testInt64FailZeroBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data()
         let result = data.int64
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt64OneByteLittleE()
@@ -1120,7 +1391,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int64(0x11)
         let data = Data(array: [0x11])
-        let result = data.int64
+        let result = data.int64!
           
         XCTAssertEqual(correct, result)
         
@@ -1133,7 +1404,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int64(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int64
+        let result = data.int64!
           
         XCTAssertEqual(correct, result)
         
@@ -1146,7 +1417,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int64(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.int64
+        let result = data.int64!
           
         XCTAssertEqual(correct, result)
         
@@ -1159,18 +1430,15 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int64
-        
-        // 0 is an indication that the initializer failed atm
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
-    func testInt64ZeroBytesBigE()
+    func testInt64FailZeroBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data()
         let result = data.int64
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt64OneByteBigeE()
@@ -1178,7 +1446,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int64(0x11)
         let data = Data(array: [0x11])
-        let result = data.int64
+        let result = data.int64!
           
         XCTAssertEqual(correct, result)
         
@@ -1191,7 +1459,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int64(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int64
+        let result = data.int64!
           
         XCTAssertEqual(correct, result)
         
@@ -1204,22 +1472,38 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int64(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.int64
+        let result = data.int64!
           
         XCTAssertEqual(correct, result)
         
         let intData = result.data
         XCTAssertEqual(intData.int64, result)
     }
+
+    func testInt64FailFourBytesBigENegativeOne()
+    {
+        DatableConfig.endianess = .big
+        let input: Int32 = -1
+        let data = input.data
+        let result = data.int64
+        XCTAssertNil(result)
+    }
+
+    func testInt64FailFourBytesLittleENegativeOne()
+    {
+        DatableConfig.endianess = .little
+        let input: Int32 = -1
+        let data = input.data
+        let result = data.int64
+        XCTAssertNil(result)
+    }
     
-    func testInt64NineBytesBigE()
+    func testInt64FailNineBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int64
-        
-        // 0 is an indication that the initializer failed atm
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     // MARK: Int32
@@ -1249,7 +1533,7 @@ class DatableTests: XCTestCase
     func testDataInt32able()
     {
         let correctNumber = Int32(0x11)
-        let dataFromNumber = Data(int32: correctNumber)
+        let dataFromNumber = Data(int32: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -1257,13 +1541,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-    func testInt32ZeroBytesLittleE()
+    func testIntFail32ZeroBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data()
         let result = data.int32
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt32OneByteLittleE()
@@ -1271,7 +1554,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int32(0x11)
         let data = Data(array: [0x11])
-        let result = data.int32
+        let result = data.int32!
           
         XCTAssertEqual(correct, result)
         
@@ -1284,7 +1567,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int32(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int32
+        let result = data.int32!
           
         XCTAssertEqual(correct, result)
         
@@ -1297,7 +1580,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int32(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.int32
+        let result = data.int32!
           
         XCTAssertEqual(correct, result)
         
@@ -1305,23 +1588,20 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int32, result)
     }
     
-    func testInt32FiveBytesLittleE()
+    func testInt32FailFiveBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int32
-        
-        // 0 is an indication that the initializer failed atm
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
-    func testInt32ZeroBytesBigE()
+    func testInt32FailZeroBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data()
-        let result = data.uint32
-        
-        XCTAssertEqual(0, result)
+        let result = data.int32
+        XCTAssertNil(result)
     }
     
     func testInt32OneByteBigeE()
@@ -1329,7 +1609,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int32(0x11)
         let data = Data(array: [0x11])
-        let result = data.int32
+        let result = data.int32!
           
         XCTAssertEqual(correct, result)
         
@@ -1342,7 +1622,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int32(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int32
+        let result = data.int32!
           
         XCTAssertEqual(correct, result)
         
@@ -1355,7 +1635,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int32(0x11111111)
         let data = Data(array: [0x11, 0x11, 0x11, 0x11])
-        let result = data.int32
+        let result = data.int32!
           
         XCTAssertEqual(correct, result)
         
@@ -1363,14 +1643,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int32, result)
     }
     
-    func testInt32FiveBytesBigE()
+    func testInt32FailFiveBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int32
-        
-        // 0 is an indication that the initializer failed atm
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     // MARK: Int16
@@ -1400,7 +1678,7 @@ class DatableTests: XCTestCase
     func testDataInt16able()
     {
         let correctNumber = Int16(0x11)
-        let dataFromNumber = Data(int16: correctNumber)
+        let dataFromNumber = Data(int16: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
@@ -1408,13 +1686,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-    func testInt16ZeroBytesLittleE()
+    func testInt16FailZeroBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data()
         let result = data.int16
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt16OneByteLittleE()
@@ -1422,7 +1699,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .little
        let correct = Int16(0x08)
        let data = Data(array: [0x08])
-       let result = data.int16
+       let result = data.int16!
        
        XCTAssertEqual(correct, result)
         
@@ -1435,7 +1712,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = Int16(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int16
+        let result = data.int16!
           
         XCTAssertEqual(correct, result)
         
@@ -1443,24 +1720,20 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int16, result)
     }
     
-    func testInt16FiveBytesLittleE()
+    func testInt16FailFiveBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int16
-        
-        // 0 is an indication that the initializer failed (for now)
-        // This should fail because the value is larger than is possible for UInt16
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
-    func testInt16ZeroBytesBigE()
+    func testInt16FailZeroBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data()
         let result = data.int16
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt16OneByteBigE()
@@ -1468,7 +1741,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .big
        let correct = Int16(0x08)
        let data = Data(array: [0x08])
-       let result = data.int16
+       let result = data.int16!
        
        XCTAssertEqual(correct, result)
         
@@ -1481,7 +1754,7 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .big
         let correct = Int16(0x1111)
         let data = Data(array: [0x11, 0x11])
-        let result = data.int16
+        let result = data.int16!
           
         XCTAssertEqual(correct, result)
         
@@ -1489,15 +1762,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int16, result)
     }
     
-    func testInt16FiveBytesBigE()
+    func testInt16FailFiveBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11, 0x11, 0x11, 0x11])
         let result = data.int16
-        
-        // 0 is an indication that the initializer failed (for now)
-        // This should fail because the value is larger than is possible for UInt16
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     // MARK: Int8
@@ -1527,21 +1797,20 @@ class DatableTests: XCTestCase
     func testDataInt8able()
     {
         let correctNumber = Int8(0x11)
-        let dataFromNumber = Data(int8: correctNumber)
+        let dataFromNumber = Data(int8: correctNumber)!
         
         XCTAssertEqual(dataFromNumber, correctNumber.data)
         
-        let numberFromData = dataFromNumber.int8
+        let numberFromData = dataFromNumber.int8!
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
-    func testInt8ZeroBytesLittleE()
+    func testInt8FailZeroBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data()
         let result = data.int8
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt8OneByteLittleE()
@@ -1549,7 +1818,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .little
        let correct = Int8(0x08)
        let data = Data(array: [0x08])
-       let result = data.int8
+       let result = data.int8!
        
        XCTAssertEqual(correct, result)
         
@@ -1557,22 +1826,20 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int8, result)
     }
     
-    func testInt8TwoBytesLittleE()
+    func testInt8FailTwoBytesLittleE()
     {
         DatableConfig.endianess = .little
         let data = Data(array: [0x11, 0x11])
         let result = data.int8
-          
-        XCTAssertEqual( 0, result)
+        XCTAssertNil(result)
     }
     
-    func testInt8ZeroBytesBigE()
+    func testInt8FailZeroBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data()
         let result = data.int8
-        
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testInt8OneByteBigE()
@@ -1580,7 +1847,7 @@ class DatableTests: XCTestCase
        DatableConfig.endianess = .big
        let correct = Int8(0x08)
        let data = Data(array: [0x08])
-       let result = data.int8
+       let result = data.int8!
        
        XCTAssertEqual(correct, result)
         
@@ -1588,13 +1855,12 @@ class DatableTests: XCTestCase
         XCTAssertEqual(intData.int8, result)
     }
     
-    func testInt8TwoBytesBigE()
+    func testInt8FailTwoBytesBigE()
     {
         DatableConfig.endianess = .big
         let data = Data(array: [0x11, 0x11])
         let result = data.int8
-          
-        XCTAssertEqual(0, result)
+        XCTAssertNil(result)
     }
     
     func testDatable_endianness1()
@@ -1605,7 +1871,7 @@ class DatableTests: XCTestCase
        
        let data = Data(array: [0x08])
        
-       let result = data.int
+       let result = data.int!
        
        XCTAssertEqual(correct, result)
         
