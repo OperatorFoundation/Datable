@@ -7,31 +7,32 @@
 
 import Foundation
 
-public class DatableConfig {
+public class DatableConfig
+{
     public static var stringEncoding: String.Encoding = .utf8
     public static var stringLiteralEncoding: StringLiteralEncoding = .utf8
     public static var endianess: Endianness = .big
     public static let localEndianness: Endianness = determineLocalEndianness()
 }
 
-public enum StringLiteralEncoding {
+public enum StringLiteralEncoding
+{
     case utf8
     case base64
     case ascii
     case hex
 }
 
-public enum Endianness {
+public enum Endianness
+{
     case big
     case little
 }
 
-func determineLocalEndianness() -> Endianness {
+func determineLocalEndianness() -> Endianness
+{
     let number: UInt32 = 0x12345678
-    let converted = number.bigEndian
-    if number == converted {
-        return .big
-    } else {
-        return .little
-    }
+    assert(number == number.littleEndian)
+    
+    return .little
 }

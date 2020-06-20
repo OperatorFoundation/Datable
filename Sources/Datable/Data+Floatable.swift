@@ -22,12 +22,7 @@ extension Data: Floatable
             return nil
         }
         
-        if self.count == 4
-        {
-            guard let uint32 = self.uint32 else {return nil}
-            return Float(bitPattern: uint32)
-        }
-        else
+        guard self.count == 4 else
         {
             // This can't actually fail.
             let doubleFloat = self.double!
@@ -35,6 +30,11 @@ extension Data: Floatable
             let singleFloat = Float(doubleFloat)
             return singleFloat
         }
+        
+        // This cannot fail.
+        let uint32 = self.uint32
+        assert(uint32 != nil)
+        return Float(bitPattern: uint32!)
     }
     
     init?(double: Double)
@@ -50,12 +50,7 @@ extension Data: Floatable
             return nil
         }
         
-        if self.count == 8
-        {
-            guard let uint64 = self.uint64 else {return nil}
-            return Double(bitPattern: uint64)
-        }
-        else
+        guard self.count == 8 else
         {
             // This cannot actually fail.
             let singleFloat = self.float!
@@ -67,5 +62,10 @@ extension Data: Floatable
             let doubleFloat = Double(singleFloat)
             return doubleFloat
         }
+        
+        // This cannot fail.
+        let uint64 = self.uint64
+        assert(uint64 != nil)
+        return Double(bitPattern: uint64!)
     }
 }

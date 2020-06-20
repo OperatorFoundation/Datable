@@ -519,15 +519,12 @@ class DatableTests: XCTestCase
     func testDataUIntable()
     {
         let correctNumber = UInt(0x11)
-        guard let dataFromNumber = Data(uint: correctNumber) else
-        {
-            XCTFail()
-            return
-        }
+        let dataFromNumber = Data(uint: correctNumber)
+        XCTAssertNotNil(dataFromNumber)
         
-        XCTAssertEqual(dataFromNumber, correctNumber.data)
+        XCTAssertEqual(dataFromNumber!, correctNumber.data)
         
-        let numberFromData = dataFromNumber.uint
+        let numberFromData = dataFromNumber!.uint
         XCTAssertEqual(numberFromData, correctNumber)
     }
     
@@ -553,16 +550,13 @@ class DatableTests: XCTestCase
         DatableConfig.endianess = .little
         let correct = UInt(0x11)
         let data = Data(array: [0x11])
-        guard let result = data.uint else
-        {
-            XCTFail()
-            return
-        }
+        let result = data.uint
+        XCTAssertNotNil(result)
           
-        XCTAssertEqual(correct, result)
+        XCTAssertEqual(correct, result!)
         
-        let uIntData = result.data
-        XCTAssertEqual(uIntData.uint, result)
+        let uIntData = result!.data
+        XCTAssertEqual(uIntData.uint, result!)
     }
     
     func testUIntTwoByteLittleE()
