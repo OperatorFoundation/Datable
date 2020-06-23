@@ -12,4 +12,5 @@ public protocol Arrayable {
 
     init(array: Array<Element>)
     var array: Array<Element> { get }
+    func array<T>(of: T.Type) -> [T]?
 }
