@@ -44,37 +44,42 @@ extension Data: MaybeNetworkIntable {
     }
     
     public init?(maybeNetworkUint: UInt) {
-        self = maybeNetworkUint.data
+        guard let networkData = maybeNetworkUint.maybeNetworkData else { return nil }
+        self = networkData
     }
     public var maybeNetworkUint: UInt? {
-        return UInt(data: self)
+        return UInt(maybeNetworkData: self)
     }
     
     public init?(maybeNetworkUint8: UInt8) {
-        self = maybeNetworkUint8.data
+        guard let networkData = maybeNetworkUint8.maybeNetworkData else { return nil }
+        self = networkData
     }
     public var maybeNetworkUint8: UInt8? {
-        return UInt8(data: self)
+        return UInt8(maybeNetworkData: self)
     }
     
     public init?(maybeNetworkUint16: UInt16) {
-        self = maybeNetworkUint16.data
+        guard let networkData = maybeNetworkUint16.maybeNetworkData else { return nil }
+        self = networkData
     }
     public var maybeNetworkUint16: UInt16? {
-        return UInt16(data: self)
+        return UInt16(maybeNetworkData: self)
     }
     
     public init?(maybeNetworkUint32: UInt32) {
-        self = maybeNetworkUint32.data
+        guard let networkData = maybeNetworkUint32.maybeNetworkData else { return nil }
+        self = networkData
     }
     public var maybeNetworkUint32: UInt32? {
-        return UInt32(data: self)
+        return UInt32(maybeNetworkData: self)
     }
     
     public init?(maybeNetworkUint64: UInt64) {
-        self = maybeNetworkUint64.data
+        guard let networkData = maybeNetworkUint64.maybeNetworkData else { return nil }
+        self = networkData
     }
     public var maybeNetworkUint64: UInt64? {
-        return UInt64(data: self)
+        return UInt64(maybeNetworkData: self)
     }
 }
