@@ -1880,5 +1880,24 @@ class DatableTests: XCTestCase
         let result: String = input.csv
         
         XCTAssertEqual(result, correct)
-    }    
+    }
+
+    func testMabyeNetworkData259()
+    {
+        let correct = Data([0, 0, 0, 0, 0, 0, 1, 3])
+        let value: UInt64 = 259
+
+        let maybeResult = value.maybeNetworkData
+        XCTAssertNotNil(maybeResult)
+        guard let result = maybeResult else
+        {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(result, correct)
+
+        let newValue = UInt64(maybeNetworkData: result)
+        XCTAssertEqual(newValue, value)
+    }
 }

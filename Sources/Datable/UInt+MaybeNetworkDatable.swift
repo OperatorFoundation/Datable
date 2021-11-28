@@ -136,7 +136,14 @@ extension UInt64: MaybeNetworkDatable
         }
         
         var number: UInt64 = 0
-        number = (UInt64(maybeNetworkData[0]) * 256 * 256 * 256 * 256 * 256 * 256 * 256) + (UInt64(maybeNetworkData[1]) * 256 * 256 * 256 * 256 * 256 * 256) + (UInt64(maybeNetworkData[2]) * 256 * 256 * 256 * 256 * 256) + (UInt64(maybeNetworkData[3]) * 256 * 256 * 256 * 256) + (UInt64(maybeNetworkData[4]) * 256 * 256 * 256) + (UInt64(maybeNetworkData[5]) * 256 * 256) + (UInt64(maybeNetworkData[6]) * 256) + UInt64(maybeNetworkData[7])
+        number = (UInt64(maybeNetworkData[0]) << (8*7))
+               + (UInt64(maybeNetworkData[1]) << (8*6))
+               + (UInt64(maybeNetworkData[2]) << (8*5))
+               + (UInt64(maybeNetworkData[3]) << (8*4))
+               + (UInt64(maybeNetworkData[4]) << (8*3))
+               + (UInt64(maybeNetworkData[5]) << (8*2))
+               + (UInt64(maybeNetworkData[6]) << (8*1))
+               + (UInt64(maybeNetworkData[7]) << (8*0))
         
         self = number
     }
@@ -144,17 +151,18 @@ extension UInt64: MaybeNetworkDatable
     public var maybeNetworkData: Data?
     {
         var data: Data = Data(repeating: 0, count: 8)
-        let number = self
-        
-        data[0] = UInt8(number >> 56)
-        data[1] = UInt8((number >> 48) & 0x00FF000000000000)
-        data[2] = UInt8((number >> 40) & 0x0000FF0000000000)
-        data[3] = UInt8((number >> 32) & 0x000000FF00000000)
-        data[4] = UInt8((number >> 24) & 0x00000000FF000000)
-        data[5] = UInt8((number >> 16) & 0x0000000000FF0000)
-        data[6] = UInt8((number >> 8) & 0x000000000000FF00)
-        data[7] = UInt8(number & 0x00000000000000FF)
-        
+
+        let number: UInt64 = self
+
+        data[0] = UInt8((number & 0xFF00000000000000) >> (8*7))
+        data[1] = UInt8((number & 0x00FF000000000000) >> (8*6))
+        data[2] = UInt8((number & 0x0000FF0000000000) >> (8*5))
+        data[3] = UInt8((number & 0x000000FF00000000) >> (8*4))
+        data[4] = UInt8((number & 0x00000000FF000000) >> (8*3))
+        data[5] = UInt8((number & 0x0000000000FF0000) >> (8*2))
+        data[6] = UInt8((number & 0x000000000000FF00) >> (8*1))
+        data[7] = UInt8((number & 0x00000000000000FF) >> (8*0))
+
         return data
     }
 }
