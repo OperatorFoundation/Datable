@@ -80,8 +80,9 @@ extension UInt16: MaybeNetworkDatable
         }
         
         var number: UInt16 = 0
-        number = (UInt16(maybeNetworkData[0]) * 256) + UInt16(maybeNetworkData[1])
-        
+        number = (UInt16(maybeNetworkData[0]) << (8*1))
+               + (UInt16(maybeNetworkData[1]) << (8*0))
+               
         self = number
     }
     
