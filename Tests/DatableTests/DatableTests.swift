@@ -1900,4 +1900,21 @@ class DatableTests: XCTestCase
         let newValue = UInt64(maybeNetworkData: result)
         XCTAssertEqual(newValue, value)
     }
+
+    func testMaybeNetworkDataUInt32()
+    {
+        let correct: UInt32 = 65536
+
+        let maybeResult = correct.maybeNetworkData
+        XCTAssertNotNil(maybeResult)
+        guard let result = maybeResult else
+        {
+            XCTFail()
+            return
+        }
+
+        let value = UInt32(maybeNetworkData: result)
+
+        XCTAssertEqual(value, correct)
+    }
 }

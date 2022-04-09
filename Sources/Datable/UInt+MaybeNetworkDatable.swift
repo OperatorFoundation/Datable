@@ -101,27 +101,32 @@ extension UInt32: MaybeNetworkDatable
 {
     public init?(maybeNetworkData: Data)
     {
-        guard maybeNetworkData.count == 4 else {
+        let byteCount = UInt32.bitWidth / 8
+        guard maybeNetworkData.count == byteCount else {
             print("Invalid data size for uint32 conversion")
             return nil
         }
         
         var number: UInt32 = 0
-        number = (UInt32(maybeNetworkData[0]) * 256 * 256 * 256) + (UInt32(maybeNetworkData[1]) * 256 * 256) + (UInt32(maybeNetworkData[2]) * 256) + UInt32(maybeNetworkData[3])
-        
+        for index in 0..<byteCount
+        {
+            number += UInt32(maybeNetworkData[index]) << (8*((byteCount-1)-index))
+        }
+
         self = number
     }
     
     public var maybeNetworkData: Data?
     {
-        var data: Data = Data(repeating: 0, count: 4)
+        let byteCount = 4
+        var data: Data = Data(repeating: 0, count: byteCount)
         let number = self
-        
-        data[0] = UInt8(number >> 24)
-        data[1] = UInt8((number >> 16) & 0x00FF0000)
-        data[2] = UInt8((number >> 8) & 0x0000FF00)
-        data[3] = UInt8(number & 0x000000FF)
-        
+
+        for index in 0..<byteCount
+        {
+            data[index] = UInt8((number << (8*index)) >> (8*(byteCount-1)))
+        }
+
         return data
     }
 }
