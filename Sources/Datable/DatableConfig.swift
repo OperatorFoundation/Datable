@@ -23,10 +23,10 @@ public enum StringLiteralEncoding
     case hex
 }
 
-public enum Endianness
+public enum Endianness: Int
 {
-    case big
-    case little
+    case big    = 1
+    case little = 0
 }
 
 func determineLocalEndianness() -> Endianness
