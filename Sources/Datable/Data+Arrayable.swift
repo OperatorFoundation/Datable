@@ -30,13 +30,17 @@ extension Data: Arrayable {
     
     func unsafeArray<T>(of: T.Type) -> [T]
     {
-        let array = self.withUnsafeBytes
-        {
-            (pointer: UnsafePointer<T>) -> [T] in
-            
-            let buffer = UnsafeBufferPointer(start: pointer, count: self.count)
-            return Array<T>(buffer)
-        }
+        let nsdata = self as NSData
+        var mutablePointer = UnsafeMutableRawPointer(malloc(self.count))
+        nsdata.getBytes(&mutablePointer, length: self.count)
+        let count = self.count / MemoryLayout<T>.size
+
+        let opaquePointer = OpaquePointer(mutablePointer)
+        let typedPointer = UnsafePointer<T>(opaquePointer)
+
+        // Get our buffer pointer and make an array out of it
+        let buffer = UnsafeBufferPointer<T>(start:typedPointer, count:count)
+        let array = [T](buffer)
         return array
     }
 }
