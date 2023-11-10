@@ -9,13 +9,13 @@ import Foundation
 
 extension Data: Floatable
 {
-    init?(float: Float)
+    public init?(float: Float)
     {
         let uint32 = float.bitPattern
         self = uint32.data
     }
     
-    var float: Float?
+    public var float: Float?
     {
         guard self.count == 4 || self.count == 8 else
         {
@@ -37,13 +37,13 @@ extension Data: Floatable
         return Float(bitPattern: uint32!)
     }
     
-    init?(double: Double)
+    public init?(double: Double)
     {
         let uint64 = double.bitPattern
         self = uint64.data
     }
     
-    var double: Double?
+    public var double: Double?
     {
         guard self.count == 4 || self.count == 8 else
         {

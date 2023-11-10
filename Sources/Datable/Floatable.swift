@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Floatable
+public protocol Floatable
 {
     init?(float: Float)
     var float: Float? {get}
